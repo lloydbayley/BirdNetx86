@@ -10,15 +10,16 @@ userDir = os.path.expanduser('~')
 APPRISE_CONFIG = userDir + '/BirdNET-Pi/apprise.txt'
 DB_PATH = userDir + '/BirdNET-Pi/scripts/birds.db'
 
+apobj = apprise.Apprise()
+config = apprise.AppriseConfig()
+config.add(APPRISE_CONFIG)
+apobj.add(config)
+
 flickr_images = {}
 species_last_notified = {}
 
 
 def notify(body, title, attached=""):
-    apobj = apprise.Apprise()
-    config = apprise.AppriseConfig()
-    config.add(APPRISE_CONFIG)
-    apobj.add(config)
     if attached != "":
         apobj.notify(
             body=body,
@@ -32,20 +33,25 @@ def notify(body, title, attached=""):
         )
 
 
+
 def sendAppriseNotifications(species, confidence, path, date, time, week, latitude, longitude, cutoff, sens, overlap, settings_dict, db_path=DB_PATH):
     # print(sendAppriseNotifications)
     # print(settings_dict)
+    print("sendAppriseNotifications received!!  5293")
     if os.path.exists(APPRISE_CONFIG) and os.path.getsize(APPRISE_CONFIG) > 0:
 
         title = settings_dict.get('APPRISE_NOTIFICATION_TITLE')
         body = settings_dict.get('APPRISE_NOTIFICATION_BODY')
         sciName, comName = species.split("_")
 
+        print ("CHECKPOINT 1")
         APPRISE_MINIMUM_SECONDS_BETWEEN_NOTIFICATIONS_PER_SPECIES = settings_dict.get('APPRISE_MINIMUM_SECONDS_BETWEEN_NOTIFICATIONS_PER_SPECIES')
         if APPRISE_MINIMUM_SECONDS_BETWEEN_NOTIFICATIONS_PER_SPECIES != "0":
             if species_last_notified.get(comName) is not None:
                 if int(timeim.time()) - species_last_notified[comName] < int(APPRISE_MINIMUM_SECONDS_BETWEEN_NOTIFICATIONS_PER_SPECIES):
                     return
+
+        print ("CHECKPOINT 2")            
 
         try:
             websiteurl = settings_dict.get('BIRDNETPI_URL')
@@ -57,6 +63,8 @@ def sendAppriseNotifications(species, confidence, path, date, time, week, latitu
         listenurl = websiteurl+"?filename="+path
         image_url = ""
 
+        print ("CHECKPOINT 3")
+
         if len(settings_dict.get('FLICKR_API_KEY')) > 0 and "$flickrimage" in body:
             if not comName in flickr_images:
                 try:
@@ -64,6 +72,8 @@ def sendAppriseNotifications(species, confidence, path, date, time, week, latitu
                     url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key='+str(settings_dict.get('FLICKR_API_KEY'))+'&text='+str(comName)+' bird&sort=relevance&per_page=5&media=photos&format=json&license=2%2C3%2C4%2C5%2C6%2C9&nojsoncallback=1'
                     resp = requests.get(url=url)
                     data = resp.json()["photos"]["photo"][0]
+
+                    print("FLICKR DATA 9876: "+str(data))
 
                     image_url = 'https://farm'+str(data["farm"])+'.static.flickr.com/'+str(data["server"])+'/'+str(data["id"])+'_'+str(data["secret"])+'_n.jpg'
                     flickr_images[comName] = image_url
@@ -75,6 +85,7 @@ def sendAppriseNotifications(species, confidence, path, date, time, week, latitu
 
 
         if settings_dict.get('APPRISE_NOTIFY_EACH_DETECTION') == "1":
+            print ("CHECKPOINT 4")
             notify_body = body.replace("$sciname", sciName)\
                 .replace("$comname", comName)\
                 .replace("$confidence", confidence)\
@@ -103,6 +114,7 @@ def sendAppriseNotifications(species, confidence, path, date, time, week, latitu
                 .replace("$overlap", overlap)
             notify(notify_body, notify_title, image_url)
             species_last_notified[comName] = int(timeim.time())
+            print ("CHECKPOINT 5 - SENT HOPEFULLY")
 
         APPRISE_NOTIFICATION_NEW_SPECIES_DAILY_COUNT_LIMIT = 1  # Notifies the first N per day.
         if settings_dict.get('APPRISE_NOTIFY_NEW_SPECIES_EACH_DAY') == "1":
