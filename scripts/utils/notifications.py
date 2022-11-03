@@ -20,20 +20,23 @@ species_last_notified = {}
 
 
 def notify(body, title, attached=""):
-    print("def notify - called")
-    if attached != "":
-        print("def notify - 1")
-        print(apobj.notify(
-            body=body,
-            title=title,
-            attach=attached,
-        ))
-    else:
-        print("def notify - 2")
-        print(apobj.notify(
-            body=body,
-            title=title,
-        ))
+    try:
+        print("def notify - called")
+        if attached != "":
+            print("def notify - 1")
+            print(apobj.notify(
+                body=body,
+                title=title,
+                attach=attached,
+            ))
+        else:
+            print("def notify - 2")
+            print(apobj.notify(
+                body=body,
+                title=title,
+            ))
+    except Exception as e:
+        print("=============== EXCEPTION: "+str(e))
 
 
 
