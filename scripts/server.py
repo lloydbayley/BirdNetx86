@@ -404,7 +404,6 @@ def handle_client(conn, addr):
 
                                 # Apprise of detection if not already alerted this run.
                                 if not entry[0] in species_apprised_this_run:
-                                    print("WANTING TO SEND! 1111")
                                     settings_dict = config_to_settings(userDir + '/BirdNET-Pi/scripts/thisrun.txt')
                                     sendAppriseNotifications(species,
                                                              str(score),
@@ -420,9 +419,6 @@ def handle_client(conn, addr):
                                                              settings_dict,
                                                              DB_PATH)
                                     species_apprised_this_run.append(entry[0])
-                                    print("SEND SUCCESSFULL 1111")
-                                else:
-                                    print("NOT SENDING!!!!!!!! 1239")
 
                                 print(str(current_date) +
                                       ';' +

@@ -20,17 +20,20 @@ species_last_notified = {}
 
 
 def notify(body, title, attached=""):
+    print("def notify - called")
     if attached != "":
-        apobj.notify(
+        print("def notify - 1")
+        print(apobj.notify(
             body=body,
             title=title,
             attach=attached,
-        )
+        ))
     else:
-        apobj.notify(
+        print("def notify - 2")
+        print(apobj.notify(
             body=body,
             title=title,
-        )
+        ))
 
 
 
@@ -83,6 +86,8 @@ def sendAppriseNotifications(species, confidence, path, date, time, week, latitu
             else:
                 image_url = flickr_images[comName]
 
+
+        print ("CHECKPOINT 3.5")
 
         if settings_dict.get('APPRISE_NOTIFY_EACH_DETECTION') == "1":
             print ("CHECKPOINT 4")
