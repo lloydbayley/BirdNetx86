@@ -64,6 +64,7 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true" && isse
           $iterations++;
 
       if (!empty($config["FLICKR_API_KEY"])) {
+        echo "CHECKPOINT 1";
 
         if(!empty($config["FLICKR_FILTER_EMAIL"])) {
           if(!isset($_SESSION["FLICKR_FILTER_EMAIL"])) {
@@ -98,14 +99,18 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true" && isse
             }
           }
 
+          echo "CHECKPOINT 2.5";
+
          $flickrjson = json_decode(file_get_contents("https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=".$config["FLICKR_API_KEY"]."&text=".str_replace(" ", "%20", $engname)."%20bird&sort=relevance".$args."&per_page=5&media=photos&format=json&nojsoncallback=1"), true)["photos"]["photo"][0];
           $modaltext = "https://flickr.com/photos/".$flickrjson["owner"]."/".$flickrjson["id"];
           $authorlink = "https://flickr.com/people/".$flickrjson["owner"];
-          echo "3: ".$authorlink;
+          echo "3: ".var_dump($flickrjson);
           $imageurl = 'https://farm' .$flickrjson["farm"]. '.static.flickr.com/' .$flickrjson["server"]. '/' .$flickrjson["id"]. '_'  .$flickrjson["secret"].  '.jpg';
           array_push($_SESSION['images'], array($comname,$imageurl,$flickrjson["title"], $modaltext, $authorlink));
           $image = $_SESSION['images'][count($_SESSION['images'])-1];
         }
+      } else {
+        echo "************** FLICKR KEY IS NULL";
       }
 
       ?>
