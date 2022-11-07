@@ -347,7 +347,7 @@ window.setInterval(function(){
     // image or audio didn't load for some reason, force a refresh in 5 seconds
     loadDetectionIfNewExists();
   }
-}, <?php echo intval($refresh/4); ?>*10000);
+}, <?php echo intval($refresh/4); ?>*30000);
 
 function loadFiveMostRecentDetections() {
   const xhttp = new XMLHttpRequest();
@@ -370,6 +370,6 @@ window.addEventListener("load", function(){
 // every $refresh seconds, this loop will run and refresh the spectrogram image
 window.setInterval(function(){
   document.getElementById("spectrogramimage").src = "/spectrogram.png?nocache="+Date.now();
-}, <?php echo $refresh; ?>*10000);
+}, <?php echo $refresh; ?>*30000);
 </script>
 
