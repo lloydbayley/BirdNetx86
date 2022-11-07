@@ -90,7 +90,7 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true" && isse
           // only open the file once per script execution
           if(!isset($lines)) {
             $lines = file($home."/BirdNET-Pi/model/labels_flickr.txt");
-            echo "LINES:".var_dump($lines)."<br>";
+            echo "LINES [1] and [2]:".$lines[1]." ".$lines[2]."<br>";
           }
           // convert sci name to English name
           foreach($lines as $line){ 
