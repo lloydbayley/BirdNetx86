@@ -1,6 +1,6 @@
 from scripts.utils.parse_settings import config_to_settings
 import tempfile
-
+#
 
 def test():
     text = """LATITUDE=32.0
