@@ -4,7 +4,7 @@ import pytest
 from scripts.utils.notifications import sendAppriseNotifications
 from datetime import datetime
 
-
+#
 def create_test_db(db_file):
     """ create a database connection to a SQLite database """
     conn = None
