@@ -3,6 +3,11 @@
 <h1 align="center">
   BirdNET-Pi
 </h1>
+<hr>
+<h1 align="center">ATTENTION: THIS IS A TEST REPOSITORY AND NOT FOR USE IN PRODUCTION</h1>
+<h1 align="center">IT IS NOT THE OFFICIAL RESPOSITORY.</h1>
+<h1 align="center">IF YOU CLONE AND USE THIS, IT IS AT YOUR OWN RISK.</h1>
+<hr>
 <p align="center">
 A realtime acoustic bird classification system for the Raspberry Pi 4B, 400, 3B+, and 0W2
 </p>
